@@ -1,1 +1,1 @@
-java -jar -Dspring.profiles.active=account-service-replica01 account-service.jar
+java -jar -Dspring.profiles.active=account-service-replica01 target/account-service.jar

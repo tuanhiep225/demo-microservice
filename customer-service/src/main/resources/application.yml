@@ -9,10 +9,7 @@ eureka:
   instance:
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2
-          
-ping-server:
-  ribbon:
-    eureka:
-      enabled: true # Disable Default Ping
-    listOfServers: localhost:8081,localhost:8084,localhost:8083
-    ServerListRefreshInterval: 15000
+       
+ribbon:
+  eureka:
+    enabled: true

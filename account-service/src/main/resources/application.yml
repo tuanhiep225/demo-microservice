@@ -24,7 +24,7 @@ spring:
   profiles: account-service-replica01
 eureka:
   instance:
-    appname: account-service  # ==> This is a instance of ABC-SERVICE
+    appname: account-service  # ==> This is a instance of account-service
   client:   
     serviceUrl:
       defaultZone: ${DISCOVERY_URL:http://localhost:9001}/eureka/  
@@ -36,7 +36,7 @@ spring:
   profiles: account-service-replica02
 eureka:
   instance:
-    appname: account-service  # ==> This is a instance of ABC-SERVICE
+    appname: account-service  # ==> This is a instance of account-service
   client:   
     serviceUrl:
       defaultZone: ${DISCOVERY_URL:http://localhost:9001}/eureka/    
