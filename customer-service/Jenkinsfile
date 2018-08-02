@@ -1,9 +1,9 @@
 node {
 
-    withMaven(maven:'maven') {
+    withMaven(maven:'M3') {
 
         stage('Checkout') {
-            git url: 'https://github.com/tuanhiep225/demo-microservice.git', credentialsId: 'github-tuanhiep225', branch: 'master'
+            git url: 'https://github.com/tuanhiep225/demo-microservice.git', branch: 'master'
         }
 
         stage('Build') {
