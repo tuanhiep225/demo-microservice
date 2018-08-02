@@ -13,7 +13,10 @@ node {
             print pom.version
             env.version = pom.version
         }
-
+        stage('Stop'){
+            sh 'docker ps -f name=account -q | xargs --no-run-if-empty docker container stop'
+            sh 'docker container ls -a -f name=account -q | xargs -r docker container rm'
+        }
         stage('Image') {
             dir ('account-service') {
                 def app = docker.build "localhost:5000/account-service:${env.version}"

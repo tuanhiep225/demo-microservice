@@ -13,6 +13,12 @@ node {
             print pom.version
             env.version = pom.version
         }
+        
+        stage('Stop'){
+            sh 'docker ps -f name=gateway -q | xargs --no-run-if-empty docker container stop'
+            sh 'docker container ls -a -f name=gateway -q | xargs -r docker container rm'
+        }
+
 
         stage('Image') {
             dir ('gateway-service') {
