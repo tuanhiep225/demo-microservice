@@ -1,5 +1,5 @@
 server:  
-  port: ${PORT:2222}
+  port: ${PORT:8081}
 
 spring:  
   application:
@@ -10,15 +10,39 @@ spring:
     level:
       org.springframework: WARN
       org.hibernate: WARN
-
+      
 eureka:  
   client:
     serviceUrl:
-      defaultZone: ${DISCOVERY_URL:http://localhost:8761}/eureka/
+      defaultZone: ${DISCOVERY_URL:http://localhost:9001}/eureka/
   instance:
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2
-      
+    
+---
+spring:
+  profiles: account-service-replica01
+eureka:
+  instance:
+    appname: account-service  # ==> This is a instance of ABC-SERVICE
+  client:   
+    serviceUrl:
+      defaultZone: ${DISCOVERY_URL:http://localhost:9001}/eureka/  
+server:
+  port: 8083   
+     
+---
+spring:
+  profiles: account-service-replica02
+eureka:
+  instance:
+    appname: account-service  # ==> This is a instance of ABC-SERVICE
+  client:   
+    serviceUrl:
+      defaultZone: ${DISCOVERY_URL:http://localhost:9001}/eureka/    
+server:
+  port: 8084
+
 ribbon:
   eureka:
     enabled: true

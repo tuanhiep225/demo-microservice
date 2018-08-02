@@ -1,13 +1,21 @@
 package pl.piomin.microservices.account.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.netflix.discovery.EurekaClient;
 
 import pl.piomin.microservices.account.model.Account;
 
@@ -15,6 +23,15 @@ import pl.piomin.microservices.account.model.Account;
 public class Api {
 
 	private List<Account> accounts;
+	
+	@Autowired
+    private EurekaClient discoveryClient;
+    
+    @Value("${spring.application.name}")
+    private String appName;
+
+    @Value("${server.port}")
+    private String portNumber;
 	
 	protected Logger logger = Logger.getLogger(Api.class.getName());
 	
@@ -31,14 +48,19 @@ public class Api {
 	
 	@RequestMapping("/accounts/{number}")
 	public Account findByNumber(@PathVariable("number") String number) {
-		logger.info(String.format("Account.findByNumber(%s)", number));
+		logger.info(String.format("Account.findByNumber(%s), port : %s", number, this.portNumber));
 		return accounts.stream().filter(it -> it.getNumber().equals(number)).findFirst().get();
 	}
 	
 	@RequestMapping("/accounts/customer/{customer}")
-	public List<Account> findByCustomer(@PathVariable("customer") Integer customerId) {
+	public Map<String,Object> findByCustomer(@PathVariable("customer") Integer customerId) {
+		String info = String.format("Hello from '%s with Port Number %s'!", discoveryClient.getApplication(appName)
+                .getName(), portNumber);
 		logger.info(String.format("Account.findByCustomer(%s)", customerId));
-		return accounts.stream().filter(it -> it.getCustomerId().intValue()==customerId.intValue()).collect(Collectors.toList());
+		Map<String, Object> result= new HashMap<>();
+		result.put("list",accounts.stream().filter(it -> it.getCustomerId().intValue()==customerId.intValue()).collect(Collectors.toList()));
+		result.put("info", info);
+		return result;
 	}
 	
 	@RequestMapping("/accounts")
@@ -46,5 +68,13 @@ public class Api {
 		logger.info("Account.findAll()");
 		return accounts;
 	}
+	
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String test()
+    {
+    	return String.format("Hello from '%s with Port Number %s'!", discoveryClient.getApplication(appName)
+                .getName(), portNumber);
+    	
+    }
 	
 }
