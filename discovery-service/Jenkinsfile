@@ -22,7 +22,7 @@ node {
         }
 
         stage ('Run') {
-            docker.image("localhost:5000/discovery-service:${env.version}").run('-p 8761:8761 -h discovery --name discovery')
+            docker.image("localhost:5000/discovery-service:${env.version}").run('-p 9001:9001 -h discovery --name discovery')
         }
 
         stage ('Final') {
