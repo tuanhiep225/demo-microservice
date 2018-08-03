@@ -3,7 +3,7 @@ node {
     withMaven(maven:'M3') {
 
         stage('Checkout') {
-            git url: 'https://github.com/tuanhiep225/demo-microservice.git', branch: 'master'
+            git url: 'https://github.com/tuanhiep225/demo-microservice.git', branch: 'testdockercompose'
         }
 
         stage('Stop'){
@@ -27,7 +27,7 @@ node {
                 }
         }
         stage("Start") {
-                sh "docker-compose up -d --build"
+                sh "docker-compose up -d"
 
         }
 
