@@ -19,13 +19,12 @@ node {
         }
         stage('Image') {
             dir ('discovery-service') {
-                def app = docker.build("sodo/discovery-service")
-                app.push()
+                sh 'docker build -t sodo/discovery-service .'
             }
         }
 
         stage ('Run') {
-            docker.image("sodo/discovery-service").run('-p 9001:9001 -h discovery --name discovery')
+        	sh 'docker run -p 9001:9001 -h discovery --name discovery sodo/discovery-service'
         }
 
         stage ('Final') {
