@@ -19,13 +19,13 @@ node {
         }
         stage('Image') {
             dir ('account-service') {
-                def app = docker.build ("sodo/account-service:${env.version}")
+                def app = docker.build ("sodo/account-service")
                 app.push()
             }
         }
 
         stage ('Run') {
-            docker.image("sodo/account-service:${env.version}").run('-p 8081:8081 -h account --name account --link discovery')
+            docker.image("sodo/account-service").run('-p 8081:8081 -h account --name account --link discovery')
         }
 
         stage ('Final') {
