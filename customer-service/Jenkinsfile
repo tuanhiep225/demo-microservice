@@ -21,7 +21,7 @@ node {
 
         stage('Image') {
             dir ('customer-service') {
-                def app = docker.build "sodo/customer-service"
+                def app = docker.build ("sodo/customer-service")
                 app.push()
             }
         }

@@ -22,7 +22,7 @@ node {
 
         stage('Image') {
             dir ('gateway-service') {
-                def app = docker.build "sodo/gateway-service"
+                def app = docker.build ("sodo/gateway-service")
                 app.push()
             }
         }
