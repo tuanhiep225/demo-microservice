@@ -1,0 +1,44 @@
+version: "2"
+
+services: 
+
+  discovery:
+    container_name: discovery
+    image: sodo/discovery-service
+    ports: 
+      - 9001:9001
+    environment:
+      SPRING_PROFILES_ACTIVE: ci
+
+  account:
+    container_name: account
+    image: sodo/account-service
+    links:
+      - discovery
+    ports: 
+      - 8081:8081
+    environment:
+      SPRING_PROFILES_ACTIVE: ci
+
+  customer:
+      container_name: customer
+      image: sodo/customer-service
+      links:
+      - discovery
+      ports: 
+        - 8085:8085
+      environment:
+        SPRING_PROFILES_ACTIVE: ci
+
+
+  gateway:
+      container_name: gateway
+      image: sodo/gateway-service
+      links:
+      - discovery
+      - account
+      customer
+      ports: 
+        - 9000:9000
+      environment:
+        SPRING_PROFILES_ACTIVE: ci
