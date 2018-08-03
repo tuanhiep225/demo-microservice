@@ -24,7 +24,7 @@ node {
         }
 
         stage ('Run') {
-        	sh 'docker run -p 9001:9001 -h discovery --name discovery sodo/discovery-service'
+        	sh 'docker run -d -p 9001:9001 -h discovery --name discovery sodo/discovery-service'
         }
 
         stage ('Final') {
