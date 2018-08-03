@@ -18,7 +18,6 @@ node {
         }
           
         stage("Build and deploy image") {
-            steps {
                 withMaven(
                         maven: 'M3',
                         mavenLocalRepo: '.repository') {
@@ -26,8 +25,6 @@ node {
                     // Run the maven build
                     sh "mvn clean package -DskipTests"
                 }
-            }
-
         }
         stage("Start") {
 
