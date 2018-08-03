@@ -22,13 +22,12 @@ node {
 
         stage('Image') {
             dir ('gateway-service') {
-                def app = docker.build ("sodo/gateway-service")
-                app.push()
+            	sh 'docker build -t sodo/gateway-service .'
             }
         }
 
         stage ('Run') {
-            docker.image("sodo/gateway-service").run('-p 9000:9000 -h gateway --name gateway --link discovery --link account --link customer')
+        	sh 'docker run -d -p 9000:9000 -h gateway --name gateway --link discovery --link account --link customer sodo/gateway-service'
         }
      
 

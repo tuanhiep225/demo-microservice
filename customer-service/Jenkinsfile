@@ -21,13 +21,12 @@ node {
 
         stage('Image') {
             dir ('customer-service') {
-                def app = docker.build ("sodo/customer-service")
-                app.push()
+            	sh 'docker build -t sodo/customer-service .'
             }
         }
 
         stage ('Run') {
-            docker.image("sodo/customer-service").run('-p 8085:8085 -h customer --name customer --link discovery --link account')
+        	sh 'docker run -d -p 8085:8085 -h customer --name customer --link discovery --link account sodo/customer-service'
         }
 
         stage ('Final') {
