@@ -27,10 +27,7 @@ node {
                 }
         }
         stage("Start") {
-
-            steps {
                 sh "docker-compose up -d --no-deps --build"
-            }
 
         }
 
