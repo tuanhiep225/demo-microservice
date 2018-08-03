@@ -6,8 +6,12 @@ node {
             git url: 'https://github.com/tuanhiep225/demo-microservice.git', branch: 'master'
         }
 
-        stage('Build Images') {
+        stage('Build') {
             sh 'mvn clean package'
+
+            def pom = readMavenPom file:'pom.xml'
+            print pom.version
+            env.version = pom.version
         }
         
         stage('Stop'){
@@ -15,6 +19,12 @@ node {
             sh 'docker container ls -a -f name=customer -q | xargs -r docker container rm'
         }
 
+        stage('Image') {
+            dir ('customer-service') {
+                def app = docker.build "sodo/customer-service"
+                app.push()
+            }
+        }
 
         stage ('Run') {
             docker.image("sodo/customer-service").run('-p 8085:8085 -h customer --name customer --link discovery --link account')

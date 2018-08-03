@@ -5,17 +5,25 @@ node {
         stage('Checkout') {
             git url: 'https://github.com/tuanhiep225/demo-microservice.git', branch: 'master'
         }
-        
-        
-        stage('Build Images') {
+
+        stage('Build') {
             sh 'mvn clean package'
+
+            def pom = readMavenPom file:'pom.xml'
+            print pom.version
+            env.version = pom.version
         }
-        
         stage('Stop'){
             sh 'docker ps -f name=discovery -q | xargs --no-run-if-empty docker container stop'
             sh 'docker container ls -a -f name=discovery -q | xargs -r docker container rm'
         }
-        
+        stage('Image') {
+            dir ('discovery-service') {
+                def app = docker.build "sodo/discovery-service"
+                app.push()
+            }
+        }
+
         stage ('Run') {
             docker.image("sodo/discovery-service").run('-p 9001:9001 -h discovery --name discovery')
         }
