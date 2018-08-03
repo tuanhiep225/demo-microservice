@@ -24,6 +24,7 @@ services:
       container_name: customer
       image: sodo/customer-service
       links:
+      - account
       - discovery
       ports: 
         - 8085:8085
@@ -37,7 +38,7 @@ services:
       links:
       - discovery
       - account
-      customer
+      - customer
       ports: 
         - 9000:9000
       environment:
