@@ -22,13 +22,13 @@ node {
 
         stage('Image') {
             dir ('gateway-service') {
-                def app = docker.build ("sodo/gateway-service")
+                def app = docker.build ("sodo/gateway-service:${env.version}")
                 app.push()
             }
         }
 
         stage ('Run') {
-            docker.image("sodo/gateway-service").run('-p 9000:9000 -h gateway --name gateway --link discovery --link account --link customer')
+            docker.image("sodo/gateway-service:${env.version}").run('-p 9000:9000 -h gateway --name gateway --link discovery --link account --link customer')
         }
      
 

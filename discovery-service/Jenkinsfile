@@ -19,13 +19,13 @@ node {
         }
         stage('Image') {
             dir ('discovery-service') {
-                def app = docker.build("sodo/discovery-service")
+                def app = docker.build("sodo/discovery-service:${env.version}")
                 app.push()
             }
         }
 
         stage ('Run') {
-            docker.image("sodo/discovery-service").run('-p 9001:9001 -h discovery --name discovery')
+            docker.image("sodo/discovery-service:${env.version}").run('-p 9001:9001 -h discovery --name discovery')
         }
 
         stage ('Final') {
