@@ -24,7 +24,7 @@ node {
         }
 
         stage ('Run') {
-        	sh 'docker run -d -p 8081:8081 -h account --name account --link discovery'
+        	sh 'docker run -d -p 8081:8081 -h account --name account --link discovery sodo/account-service'
         }
 
         stage ('Final') {
