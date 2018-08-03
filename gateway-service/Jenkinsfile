@@ -6,12 +6,8 @@ node {
             git url: 'https://github.com/tuanhiep225/demo-microservice.git', branch: 'master'
         }
 
-        stage('Build') {
-            sh 'mvn clean install'
-
-            def pom = readMavenPom file:'pom.xml'
-            print pom.version
-            env.version = pom.version
+        stage('Build Images') {
+            sh 'mvn clean package'
         }
         
         stage('Stop'){
@@ -20,15 +16,8 @@ node {
         }
 
 
-        stage('Image') {
-            dir ('gateway-service') {
-                def app = docker.build "localhost:5000/gateway-service:${env.version}"
-                app.push()
-            }
-        }
-
         stage ('Run') {
-            docker.image("localhost:5000/gateway-service:${env.version}").run('-p 9000:9000 -h gateway --name gateway --link discovery --link account --link customer')
+            docker.image("sodo/gateway-service").run('-p 9000:9000 -h gateway --name gateway --link discovery --link account --link customer')
         }
      
 
