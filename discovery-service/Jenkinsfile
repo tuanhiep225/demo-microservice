@@ -7,7 +7,7 @@ node {
         }
 
         stage('Build') {
-            sh 'mvn clean package'
+            sh 'mvn clean install'
 
             def pom = readMavenPom file:'pom.xml'
             print pom.version
